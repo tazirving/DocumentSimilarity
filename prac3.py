@@ -27,6 +27,7 @@ vectorizador_tf = TfidfVectorizer(token_pattern=r'(?u)\w\w+|\.')
 X_tf = vectorizador_tf.fit_transform(corpus)
 vector_td = vectorizador_tf.get_feature_names_out()
 
+#Función de la interfaz
 def clkAccept():
         #Se busca el archivo a cifrar
         file = filedialog.askopenfilename(filetypes=[("Text file", "*.txt"), ("All the files", "*.*")])
@@ -42,10 +43,10 @@ def clkAccept():
                 #Agrega aquí el código para la representación binaria 
         elif rep == 1: #Representación de frecuencia
                 print("Se escogio la representación 'Frecuencia'")#Esta linea se puede borrar solo es demostrativa
-                #Agrega aquí el código para la representación binaria 
+                #Agrega aquí el código para la representación Frecuencia 
         else:
                 print("Se escogio la representación 'Tf-idf'")#Esta linea se puede borrar solo es demostrativa
-                #Agrega aquí el código para la representación binaria 
+                #Agrega aquí el código para la representación Tf-idf 
 
 #Interfaz
 root = tk.Tk()
