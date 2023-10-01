@@ -3,7 +3,11 @@ import spacy
 import sys
 from spacy.tokenizer import Tokenizer
 from spacy.util import compile_suffix_regex
-
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox as MesBox
+from tkinter import filedialog
 
 def custom_tokenizer(nlp):
     prefix_re = re.compile(r'^[\–\—\.\$\,\?\:\;\‘\’\`\“\”\"\'\[~\¡«()¿\_\…\*-]|^\d{1,}$|^@\w+$]')
@@ -25,7 +29,7 @@ def custom_tokenizer(nlp):
 
 def corpusNormalizado(nombre_corpus):        
     #Leyendo el archivo de texto
-    with open(nombre_corpus, "r") as txt_file:
+    with open(nombre_corpus, "r", encoding='utf-8') as txt_file:
         corpus = txt_file.readlines()
 
     #Obteniendo solo las noticias
@@ -92,19 +96,15 @@ def corpusNormalizado(nombre_corpus):
 
         cadena_lematizada = " ".join(noticias_lemmas)
 
-        with open('pruebas 1/pruebas_normalizadas/'+nombre_archivo, 'w') as archivo:
+        with open('NorLema'+nombre_archivo, 'w', encoding='utf-8') as archivo:
             archivo.write(cadena_lematizada + '\n')
 
         cadena_lematizada=""
         noticias_lemmas=[]
     
-    return 'pruebas 1/pruebas_normalizadas/'+nombre_archivo
-
-
-
+    return 'NorLema'+nombre_archivo
 
 
 
         
     
-
