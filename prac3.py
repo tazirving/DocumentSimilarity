@@ -1,6 +1,12 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+#Librerias para la interfaz
+from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox as MesBox
+from tkinter import filedialog
 
 #Cargando el corpus
 with open("noticias_nuevo_corpus_2.txt", "r") as txt_file:
@@ -20,3 +26,46 @@ vector_frec = vectorizador_frecuencia.get_feature_names_out()
 vectorizador_tf = TfidfVectorizer(token_pattern=r'(?u)\w\w+|\.')
 X_tf = vectorizador_tf.fit_transform(corpus)
 vector_td = vectorizador_tf.get_feature_names_out()
+
+def clkAccept():
+        #Se busca el archivo a cifrar
+        file = filedialog.askopenfilename(filetypes=[("Text file", "*.txt"), ("All the files", "*.*")])
+        with open(file, 'r') as txt_testfile:
+                test_corpus = txt_testfile.readlines()
+        
+        rep = com_rep.current() #Obtiene el tipo de representación elegida por el usuario
+
+        if rep < 0:
+                 MesBox.showerror(title='Error!', message='You must select a representation mode.') #Mensaje de error
+        elif rep == 0: #Representación binaria
+                print("Se escogio la representación 'Binaria'")#Esta linea se puede borrar solo es demostrativa
+                #Agrega aquí el código para la representación binaria 
+        elif rep == 1: #Representación de frecuencia
+                print("Se escogio la representación 'Frecuencia'")#Esta linea se puede borrar solo es demostrativa
+                #Agrega aquí el código para la representación binaria 
+        else:
+                print("Se escogio la representación 'Tf-idf'")#Esta linea se puede borrar solo es demostrativa
+                #Agrega aquí el código para la representación binaria 
+
+#Interfaz
+root = tk.Tk()
+root.title("P3: Document Similarity") #Titulo de la ventana
+main_Frame = Frame(root)
+main_Frame.grid()
+main_Frame.config(width=300, height=200) #Dimesiones de la ventana
+
+welcomeLabel = Label(root, text='Welcome!') #Mensaje de bienvenida
+welcomeLabel.place(x=105, y=30, width=90, height=20) #Dimensiones del Label de bienvenida
+welcomeLabel.config(font=('Arial',14))
+
+keyLabel = Label(root, text='Representation:')#Leyenda
+keyLabel.place(x=20, y=90) 
+rep = ['Binary', 'Frequency', 'Tf-idf'] #Tipo de representación
+com_rep = ttk.Combobox(root, values=rep, width=15) #Lista despegable
+com_rep.place(x=120, y=90)
+com_rep['values']=rep
+
+btnAccept = tk.Button(text='Accept', command=clkAccept) #Botón de busqueda
+btnAccept.place(x=120, y=130, width=60, height=25)#Dimesiones y posición del botón
+
+root.mainloop() #Mantiene la ventana abierta para interactuar con ella
