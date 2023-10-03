@@ -1,6 +1,6 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-import Prac2
+import prac2
 #Librerias para la interfaz
 from tkinter import *
 import tkinter as tk
@@ -33,7 +33,7 @@ vector_td = vectorizador_tf.get_feature_names_out()
 def clkAccept():
         #Se busca el archivo a cifrar
         file = filedialog.askopenfilename(filetypes=[("Text file", "*.txt"), ("All the files", "*.*")])
-        fileNor=Prac2.corpusNormalizado(file)
+        fileNor=prac2.corpusNormalizado(file)
         with open(fileNor, 'r', encoding='utf-8') as txt_testfile:
                 test_corpus = txt_testfile.readlines()
         print(test_corpus)
