@@ -10,28 +10,24 @@ from tkinter import filedialog
 import pandas as pd
 
 
-    #Generar las tres representaciones vectoriales
+#Cargando el corpus
+with open("noticias_nuevo_corpus_2.txt", "r", encoding='utf-8') as txt_file:
+        corpus = txt_file.readlines()
 
-def repVectFrecuencia(corpus):
-     #Frecuencia
-    vectorizador_frecuencia = CountVectorizer(token_pattern=r'(?u)\w\w+|\.')
-    X_frecuencia = vectorizador_frecuencia.fit_transform(corpus)
-    vector_frec = vectorizador_frecuencia.get_feature_names_out()
-    return vectorizador_frecuencia,vector_frec,X_frecuencia
+#Generar las tres representaciones vectoriales
 
-def repVectTf(corpus):
-     #Tf-idf
-    vectorizador_tf = TfidfVectorizer(token_pattern=r'(?u)\w\w+|\.')
-    X_tf = vectorizador_tf.fit_transform(corpus)
-    vector_td = vectorizador_tf.get_feature_names_out()
-    return vectorizador_tf,X_tf,vector_td
-
-def repVectBi(corpus):
-    #Binaria
-    vectorizador_binario = CountVectorizer(binary=True,token_pattern=r'(?u)\w\w+|\.')
-    X_binario = vectorizador_binario.fit_transform(corpus)
-    vector_bi = vectorizador_binario.get_feature_names_out()
-    return vectorizador_binario,vector_bi,X_binario
+#Binaria
+vectorizador_binario = CountVectorizer(binary=True,token_pattern=r'(?u)\w\w+|\.')
+X_binario = vectorizador_binario.fit_transform(corpus)
+vector_bi = vectorizador_binario.get_feature_names_out()
+#Frecuencia
+vectorizador_frecuencia = CountVectorizer(token_pattern=r'(?u)\w\w+|\.')
+X_frecuencia = vectorizador_frecuencia.fit_transform(corpus)
+vector_frec = vectorizador_frecuencia.get_feature_names_out()
+#Tf-idf
+vectorizador_tf = TfidfVectorizer(token_pattern=r'(?u)\w\w+|\.')
+X_tf = vectorizador_tf.fit_transform(corpus)
+vector_td = vectorizador_tf.get_feature_names_out()
 
 #Función de la interfaz
 def clkAccept():
@@ -48,29 +44,24 @@ def clkAccept():
         elif rep == 0: #Representación binaria
                 print("Se escogio la representación 'Binaria'")#Esta linea se puede borrar solo es demostrativa
                 #Agrega aquí el código para la representación binaria 
-                vectorizador_biTC,vector_biTC,X_binarioTC=repVectBi(test_corpus) #Representacion Binaria del texto de prueba
+                X_binario = vectorizador_binario.transform(test_corpus)
+                vector_bi = vectorizador_binario.get_feature_names_out()#Representacion Binaria del texto de prueba
 
 
                 
         elif rep == 1: #Representación de frecuencia
                 print("Se escogio la representación 'Frecuencia'")#Esta linea se puede borrar solo es demostrativa
                 #Agrega aquí el código para la representación Frecuencia 
-                vectorizador_frecTC,vector_frecTC,X_frecuenciaTC=repVectFrecuencia(corpus) #Representacion frecuencia del texto de prueba
+                X_frecuencia = vectorizador_frecuencia.transform(test_corpus)
+                vector_frec = vectorizador_frecuencia.get_feature_names_out()    #Representacion frecuencia del texto de prueba
 
         else:
                 print("Se escogio la representación 'Tf-idf'")#Esta linea se puede borrar solo es demostrativa
                 #Agrega aquí el código para la representación Tf-idf 
-                
-                vectorizador_tfTC,X_tfTC,vector_tdTC=repVectTf(corpus) #Representacion tf-idf del texto de prueba
+                X_tf = vectorizador_tf.transform(test_corpus)
+                vector_td = vectorizador_tf.get_feature_names_out() #Representacion tf-idf del texto de prueba
 
-#Cargando el corpus
-with open("noticias_nuevo_corpus_2.txt", "r", encoding='utf-8') as txt_file:
-        corpus = txt_file.readlines()
 
-#Generar las tres representaciones vectoriales de noticias_nuevo_corpus
-vectorizador_biC,vector_biC,X_binarioC=repVectBi(corpus)
-vectorizador_frecC,vector_frecC,X_frecuenciaC=repVectFrecuencia(corpus)
-vectorizador_tfC,X_tfC,vector_tdC=repVectTf(corpus)
 
 #Interfaz
 root = tk.Tk()
