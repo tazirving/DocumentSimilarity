@@ -29,6 +29,7 @@ vectorizador_tf = TfidfVectorizer(token_pattern=r'(?u)\w\w+|\.')
 X_tf = vectorizador_tf.fit_transform(corpus)
 vector_td = vectorizador_tf.get_feature_names_out()
 
+    
 # Función de comparación utilizando coseno
 def cal_similarity(a, b):
     similarity_scores = cosine_similarity(a, b)
@@ -37,8 +38,25 @@ def cal_similarity(a, b):
     most_similar_values = similarity_scores[:, -1][most_similar_id]
     return most_similar_id, most_similar_values
 
+def show_results(a_list, b_list):
+    idx_list, val_list = a_list, b_list
+    
+    # Limpia el resultado anterior si lo hubiera
+    if hasattr(show_results, "result_label"):
+        show_results.result_label.destroy()
+    
+    # Crea una etiqueta de texto para mostrar los resultados
+    result_text = "Posición\tValor Función Coseno\n"
+    for idx, value in zip(idx_list, val_list):
+        formatted_value = "{:.10f}".format(value)  # Formatea a 2 decimales
+        result_text += f"{idx}\t{formatted_value}\n"
+    
+    show_results.result_label = Label(root, text=result_text)
+    show_results.result_label.place(x=20, y=170)
+    show_results.result_label.config(font=("Arial", 12))
+
 #Función de la interfaz
-def clkAccept():
+def clkPick():
     global X_binario, X_frecuencia, X_tf
     global vectorizador_binario, vectorizador_frecuencia, vectorizador_tf
     #Se busca el archivo 
@@ -99,13 +117,15 @@ def clkAccept():
     print("")
     for idx in idx_list:
         print(corpus[idx])
+        
+    show_results(idx_list, val_list)
     
 #Interfaz
 root = tk.Tk()
 root.title("P3: Document Similarity") #Titulo de la ventana
 main_Frame = Frame(root)
 main_Frame.grid()
-main_Frame.config(width=300, height=200) #Dimesiones de la ventana
+main_Frame.config(width=300, height=420) #Dimesiones de la ventana
 
 welcomeLabel = Label(root, text='Welcome!') #Mensaje de bienvenida
 welcomeLabel.place(x=105, y=30, width=90, height=20) #Dimensiones del Label de bienvenida
@@ -118,7 +138,7 @@ com_rep = ttk.Combobox(root, values=rep, width=15) #Lista despegable
 com_rep.place(x=120, y=90)
 com_rep['values']=rep
 
-btnAccept = tk.Button(text='Accept', command=clkAccept) #Botón de busqueda
-btnAccept.place(x=120, y=130, width=60, height=25)#Dimesiones y posición del botón
+btnAccept = tk.Button(text='Pick a Document', command=clkPick, bg='#79D0F0') #Botón de busqueda
+btnAccept.place(x=80, y=130, width=120, height=25)#Dimesiones y posición del botón
 
 root.mainloop() #Mantiene la ventana abierta para interactuar con ella
