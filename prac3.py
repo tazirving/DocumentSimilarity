@@ -34,7 +34,8 @@ def cal_similarity(a, b):
     similarity_scores = cosine_similarity(a, b)
     # Se invierte el vector [::-1] ya que el ordenamiento argsort lo hace de menor a mayor (en este caso similitud)
     most_similar_id = np.argsort(similarity_scores[:,-1])[::-1][:10]
-    return most_similar_id
+    most_similar_values = similarity_scores[:, -1][most_similar_id]
+    return most_similar_id, most_similar_values
 
 #Función de la interfaz
 def clkAccept():
@@ -60,33 +61,42 @@ def clkAccept():
             print("Corpus(Train)", X_binario.shape[0], X_binario.shape[1])
             print("Doc(Test)", Y_binario.shape[0], Y_binario.shape[1])
             """
-            # Castinga a Dense Arrays
+            # Casting a Dense Arrays
             da1 = X_binario.toarray()
             da2 = Y_binario.toarray()
             # Ejecutando la función para calcular similaridad
-            idx_list = cal_similarity(da1, da2)
+            idx_list, val_list = cal_similarity(da1, da2)
     elif rep == 1: #Representación de frecuencia
             print("Se escogio la representación 'Frecuencia'")
             #Agrega aquí el código para la representación Frecuencia 
             Y_frecuencia = vectorizador_frecuencia.transform(test_corpus)
             vector_frec = vectorizador_frecuencia.get_feature_names_out() # NO SE UTILIZA
-            # Castinga a Dense Arrays
+            # Casting a Dense Arrays
             da1 = X_frecuencia.toarray()
             da2 = Y_frecuencia.toarray()
             # Ejecutando la función para calcular similaridad
-            idx_list = cal_similarity(da1, da2)
+            idx_list, val_list = cal_similarity(da1, da2)
+            
     else:
             print("Se escogio la representación 'Tf-idf'")#Esta linea se puede borrar solo es demostrativa
             #Agrega aquí el código para la representación Tf-idf 
             Y_tf = vectorizador_tf.transform(test_corpus)
             vector_td = vectorizador_tf.get_feature_names_out() # NO SE UTILIZA
             idx_list = cal_similarity(X_tf, Y_tf)
-            # Castinga a Dense Arrays
+            # Casting a Dense Arrays
             da1 = X_tf.toarray()
             da2 = Y_tf.toarray()
             # Ejecutando la función para calcular similaridad
-            idx_list = cal_similarity(da1, da2)
+            idx_list, val_list = cal_similarity(da1, da2)
     
+    #Resultados en Consola
+    print("")
+    print("Posición\tValor de la Función Coseno") # Títulos de las columnas
+    # Imprime la lista de los 10 más similares (posición, valor)
+    for idx, value in zip(idx_list, val_list):
+        print(f"{idx}\t\t\t{value}")
+   # Imprime el contenido de los 10 documentos en ese orden
+    print("")
     for idx in idx_list:
         print(corpus[idx])
     
